@@ -98,16 +98,16 @@ namespace unvell.D2DLib
 
 		public void DrawLine(FLOAT x1, FLOAT y1, FLOAT x2, FLOAT y2, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat)
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round)
 		{
-			DrawLine(new D2DPoint(x1, y1), new D2DPoint(x2, y2), color, weight, dashStyle, startCap, endCap);
+			DrawLine(new D2DPoint(x1, y1), new D2DPoint(x2, y2), color, weight, dashStyle, startCap, endCap, dashCap);
 		}
 
 		public void DrawLine(D2DPoint start, D2DPoint end, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat)
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round)
 		{
-			D2D.DrawLine(this.Handle, start, end, color, weight, dashStyle, startCap, endCap);
+			D2D.DrawLine(this.Handle, start, end, color, weight, dashStyle, startCap, endCap, dashCap);
 		}
 
 		public void DrawLines(D2DPoint[] points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid)
