@@ -1,34 +1,38 @@
 name: Publish to Registry
 
-name: publish-packages
-
 on: 
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version'
-        default: '0.0.0'
-        required: true
+
+env:
+  DOTNET_NOLOGO: true
 
 jobs:
   build:
     runs-on: windows-latest
-    if: github.ref == 'refs/heads/publish'
+    if: github.ref == 'refs/heads/nuget'
 
     steps:
-    - uses: actions/checkout@v1
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - uses: actions/checkout@v2
       
     - name: Setup .NET 5
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.100
-
+        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        
     - name: Restore
       run: dotnet restore src/D2DLib.sln
 
-    - name: Pack
-      run: msbuild src/D2DLibExport/D2DLibExport.csproj /t:pack -p:Configuration=Release /p:DefineConstants=X64 -p:PackageVersion=1.2.3 -p:OutputPath=.dist -t:restore -p:RestorePackagesConfig=true
+    - name: Build Native Library
+      run: msbuild src/d2dlib/D2DLib.vcxproj -p:Configuration=Release -p:Platform="x64"
 
-    - name: Push
-      run: dotnet nuget push src/D2DLibExport/.dist/D2DLibExport.${{github.event.inputs.version}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} -s https://nuget.pkg.github.com/PauloHMattos/index.json --skip-duplicate
-        
+    - name: Pack Managed Libraries
+      run: msbuild src/D2DWinForm/D2DWinForm.csproj /t:pack -p:Configuration=Release -p:Platform="x64" -p:OutputPath=.dist -p:PackageVersion=0.0.0-g${{ github.sha }} -p:RepositoryUrl=${{ matrix.RepositoryUrl }}
+
+    - name: Publish the package to GPR
+      run: dotnet nuget push src/D2DWinForm/.dist/D2DLib-x64.0.0.0-g${{ github.sha }}.nupkg
