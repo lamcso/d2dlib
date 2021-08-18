@@ -40,24 +40,25 @@ namespace unvell.D2DLib
 {
 	internal static class D2D
 	{
+		const string DLL_NAME = "d2dlib.dll";
 
-#if DEBUG
+//#if DEBUG
 
-#if X86
-		const string DLL_NAME = "d2dlib32d.dll";
-#elif X64
-		const string DLL_NAME = "d2dlib64d.dll";
-#endif
+//#if X86
+//		const string DLL_NAME = "d2dlib32d.dll";
+//#elif X64
+//		const string DLL_NAME = "d2dlib64d.dll";
+//#endif
 
-#else // Release
+//#else // Release
 
-#if X86
-		const string DLL_NAME = "d2dlib32.dll";
-#elif X64
-		const string DLL_NAME = "d2dlib64.dll";
-#endif
+//#if X86
+//		const string DLL_NAME = "d2dlib32.dll";
+//#elif X64
+//		const string DLL_NAME = "d2dlib64.dll";
+//#endif
 
-#endif
+//#endif
 
 		#region Device Context
 

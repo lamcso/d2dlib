@@ -4,16 +4,17 @@
   
   <!-- Build properties -->
   <PropertyGroup>
-    <TargetFrameworks>net4.8</TargetFrameworks>
+    <TargetFrameworks>net4.0;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>unvell.D2DLib.WinForm</RootNamespace>
     <AssemblyName>d2dwinform</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
 
   <!-- Package properties -->
   <PropertyGroup>
-    <PackageId Condition="'$(Platform)'=='x86'">D2DLib</PackageId>
-    <PackageId Condition="'$(Platform)'=='x64'">D2DLib-x64</PackageId>
+    <PackageId>D2DLib</PackageId>
     <PackageIcon>logo_d2dlib.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>direct2d hardware-acceleration drawing draw custom-draw rendering paint gpu performance immediate bitmap memory-bitmap direct2d-api graphics-context</PackageTags>
@@ -28,11 +29,11 @@
   <ItemGroup>
     <None Include="..\..\package\logo_d2dlib.png" Pack="true" PackagePath="\" />
   </ItemGroup>
-
   <!--
   Ensure ProjectReference output DLL is included in the package.
   Workaround from: https://github.com/nuget/home/issues/3891#issuecomment-377319939
   -->
+  
   <PropertyGroup>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
