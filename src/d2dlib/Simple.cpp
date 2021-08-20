@@ -133,9 +133,9 @@ void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color
 
 			if (pathGeo != NULL) {
 				pathGeo->Open(&sink);
-				sink->BeginFigure(points[0], D2D1_FIGURE_BEGIN::D2D1_FIGURE_BEGIN_FILLED);
+				sink->BeginFigure(points[0], D2D1_FIGURE_BEGIN::D2D1_FIGURE_BEGIN_HOLLOW);
 				sink->AddLines(points + 1, count - 1);
-				sink->EndFigure(D2D1_FIGURE_END_CLOSED);
+				sink->EndFigure(D2D1_FIGURE_END_OPEN);
 				sink->Close();
 
 				context->renderTarget->DrawGeometry(pathGeo, brush, width, strokeStyle);
