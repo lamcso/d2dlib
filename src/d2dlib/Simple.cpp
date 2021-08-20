@@ -28,7 +28,7 @@
 #include "Brush.h"
 
 void DrawLine(HANDLE ctx, D2D1_POINT_2F start, D2D1_POINT_2F end, D2D1_COLOR_F color,
-	FLOAT width, D2D1_DASH_STYLE dashStyle, D2D1_CAP_STYLE startCap, D2D1_CAP_STYLE endCap, D2D1_CAP_STYLE dashCap)
+	FLOAT width, D2D1_DASH_STYLE dashStyle, D2D1_CAP_STYLE startCap, D2D1_CAP_STYLE endCap, D2D1_CAP_STYLE dashCap, FLOAT miterLimit, FLOAT dashOffset)
 {
 	RetrieveContext(ctx);
 
@@ -48,9 +48,9 @@ void DrawLine(HANDLE ctx, D2D1_POINT_2F start, D2D1_POINT_2F end, D2D1_COLOR_F c
 				endCap,
 				dashCap,
 				D2D1_LINE_JOIN_MITER,
-				10.0f,
+				miterLimit,
 				dashStyle,
-				0.0f), NULL, 0, &strokeStyle);
+				dashOffset), NULL, 0, &strokeStyle);
 		}
 
 		context->renderTarget->DrawLine(start, end, brush, width, strokeStyle);
@@ -100,7 +100,7 @@ D2DLIB_API void DrawLineWithPen(HANDLE ctx, D2D1_POINT_2F start, D2D1_POINT_2F e
 }
 
 void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color,
-	FLOAT width, D2D1_DASH_STYLE dashStyle)
+	FLOAT width, D2D1_DASH_STYLE dashStyle, D2D1_CAP_STYLE startCap, D2D1_CAP_STYLE endCap, D2D1_CAP_STYLE dashCap, FLOAT miterLimit, FLOAT dashOffset)
 {
 	if (count <= 1) return;
 
@@ -113,17 +113,19 @@ void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color
 
 	if (brush != NULL) {
 
-		if (dashStyle != D2D1_DASH_STYLE_SOLID)
+		if (dashStyle != D2D1_DASH_STYLE_SOLID ||
+			startCap != D2D1_CAP_STYLE_FLAT ||
+			endCap != D2D1_CAP_STYLE_FLAT)
 		{
 			context->factory->CreateStrokeStyle(D2D1::StrokeStyleProperties(
-				D2D1_CAP_STYLE_FLAT,
-				D2D1_CAP_STYLE_FLAT,
-				D2D1_CAP_STYLE_ROUND,
+				startCap,
+				endCap,
+				dashCap,
 				D2D1_LINE_JOIN_MITER,
-				10.0f,
+				miterLimit,
 				dashStyle,
-				0.0f), NULL, 0, &strokeStyle);
-
+				dashOffset), NULL, 0, &strokeStyle);
+		
 			ID2D1PathGeometry* pathGeo = NULL;
 			ID2D1GeometrySink* sink = NULL;
 
@@ -133,7 +135,7 @@ void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color
 				pathGeo->Open(&sink);
 				sink->BeginFigure(points[0], D2D1_FIGURE_BEGIN::D2D1_FIGURE_BEGIN_FILLED);
 				sink->AddLines(points + 1, count - 1);
-				//sink->EndFigure(D2D1_FIGURE_END_CLOSED);
+				sink->EndFigure(D2D1_FIGURE_END_CLOSED);
 				sink->Close();
 
 				context->renderTarget->DrawGeometry(pathGeo, brush, width, strokeStyle);

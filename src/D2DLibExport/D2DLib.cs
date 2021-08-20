@@ -152,11 +152,12 @@ namespace unvell.D2DLib
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void DrawLine(HANDLE context, D2DPoint start, D2DPoint end, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round);
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void DrawLines(HANDLE context, D2DPoint[] points, UINT count, D2DColor color,
-			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid);
+			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void DrawRectangle(HANDLE context, ref D2DRect rect, D2DColor color,
