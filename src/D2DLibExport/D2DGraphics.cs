@@ -98,21 +98,25 @@ namespace unvell.D2DLib
 
 		public void DrawLine(FLOAT x1, FLOAT y1, FLOAT x2, FLOAT y2, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round)
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, 
+			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
 		{
-			DrawLine(new D2DPoint(x1, y1), new D2DPoint(x2, y2), color, weight, dashStyle, startCap, endCap, dashCap);
+			DrawLine(new D2DPoint(x1, y1), new D2DPoint(x2, y2), color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
 		}
 
 		public void DrawLine(D2DPoint start, D2DPoint end, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round)
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat,
+			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
 		{
-			D2D.DrawLine(this.Handle, start, end, color, weight, dashStyle, startCap, endCap, dashCap);
+			D2D.DrawLine(this.Handle, start, end, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
 		}
 
-		public void DrawLines(D2DPoint[] points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid)
+		public void DrawLines(D2DPoint[] points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid, 
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat,
+			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
 		{
-			D2D.DrawLines(this.Handle, points, (uint)points.Length, color, weight, dashStyle);
+			D2D.DrawLines(this.Handle, points, (uint)points.Length, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
 		}
 
 		public void DrawEllipse(FLOAT x, FLOAT y, FLOAT width, FLOAT height, D2DColor color,
