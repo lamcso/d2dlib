@@ -4,7 +4,8 @@
   
   <!-- Build properties -->
   <PropertyGroup>
-    <TargetFrameworks>net4.8;netcoreapp3.1</TargetFrameworks>
+    <!--<TargetFrameworks>net4.8;netcoreapp3.1</TargetFrameworks>-->
+    <TargetFrameworks>net4.8</TargetFrameworks>
     <RootNamespace>unvell.D2DLib.WinForm</RootNamespace>
     <AssemblyName>d2dwinform</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>
