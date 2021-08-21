@@ -54,14 +54,20 @@ namespace unvell.D2DLib
 			D2D.SetPathStartPoint(this.Handle, startPoint);
 		}
 
-		public void AddLines(D2DPoint[] points)
+		public unsafe void AddLines(ReadOnlySpan<D2DPoint> points)
 		{
-			D2D.AddPathLines(this.Handle, points);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.AddPathLines(this.Handle, p, (UINT)points.Length);
+			}
 		}
 
-		public void AddBeziers(D2DBezierSegment[] bezierSegments)
+		public unsafe void AddBeziers(ReadOnlySpan<D2DBezierSegment> bezierSegments)
 		{
-			D2D.AddPathBeziers(this.Handle, bezierSegments);
+			fixed (D2DBezierSegment* s = bezierSegments)
+			{
+				D2D.AddPathBeziers(this.Handle, s, (UINT)bezierSegments.Length);
+			}
 		}
 
     // TODO: unnecessary API and it doesn't work very well, consider to remove

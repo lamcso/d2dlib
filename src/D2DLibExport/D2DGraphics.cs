@@ -23,8 +23,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 using FLOAT = System.Single;
@@ -112,11 +110,14 @@ namespace unvell.D2DLib
 			D2D.DrawLine(this.Handle, start, end, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
 		}
 
-		public void DrawLines(D2DPoint[] points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid, 
+		public unsafe void DrawLines(ReadOnlySpan<D2DPoint> points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
 			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat,
 			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
 		{
-			D2D.DrawLines(this.Handle, points, (uint)points.Length, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.DrawLines(this.Handle, p, (uint)points.Length, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
+			}
 		}
 
 		public void DrawEllipse(FLOAT x, FLOAT y, FLOAT width, FLOAT height, D2DColor color,
@@ -183,41 +184,53 @@ namespace unvell.D2DLib
 			D2D.FillEllipseWithBrush(this.Handle, ref ellipse, brush.Handle);
 		}
 
-		public void DrawBeziers(D2DBezierSegment[] bezierSegments,
+		public unsafe void DrawBeziers(ReadOnlySpan<D2DBezierSegment> bezierSegments,
 														D2DColor strokeColor, FLOAT strokeWidth = 1,
 														D2DDashStyle dashStyle = D2DDashStyle.Solid)
 		{
-			D2D.DrawBeziers(Handle, bezierSegments, (uint)bezierSegments.Length, strokeColor, strokeWidth, dashStyle);
+			fixed (D2DBezierSegment* s = bezierSegments)
+			{
+				D2D.DrawBeziers(Handle, s, (uint)bezierSegments.Length, strokeColor, strokeWidth, dashStyle);
+			}
 		}
 
-		public void DrawPolygon(D2DPoint[] points,
+		public void DrawPolygon(ReadOnlySpan<D2DPoint> points,
 			D2DColor strokeColor, FLOAT strokeWidth = 1f, D2DDashStyle dashStyle = D2DDashStyle.Solid)
 		{
 			this.DrawPolygon(points, strokeColor, strokeWidth, dashStyle, D2DColor.Transparent);
 		}
 
-		public void DrawPolygon(D2DPoint[] points,
+		public unsafe void DrawPolygon(ReadOnlySpan<D2DPoint> points,
 			D2DColor strokeColor, FLOAT strokeWidth, D2DDashStyle dashStyle, D2DColor fillColor)
 		{
-			D2D.DrawPolygon(Handle, points, (uint)points.Length, strokeColor, strokeWidth, dashStyle, fillColor);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.DrawPolygon(Handle, p, (uint)points.Length, strokeColor, strokeWidth, dashStyle, fillColor);
+			}
 		}
 
-		public void DrawPolygon(D2DPoint[] points,
+		public unsafe void DrawPolygon(ReadOnlySpan<D2DPoint> points,
 			D2DColor strokeColor, FLOAT strokeWidth, D2DDashStyle dashStyle, D2DBrush fillBrush)
 		{
-			D2D.DrawPolygonWithBrush(Handle, points, (uint)points.Length, strokeColor, strokeWidth, dashStyle, fillBrush.Handle);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.DrawPolygonWithBrush(Handle, p, (uint)points.Length, strokeColor, strokeWidth, dashStyle, fillBrush.Handle);
+			}
 		}
 
     [Obsolete("FillPolygon will be removed from later versions. Use DrawPolygon instead")]
-    public void FillPolygon(D2DPoint[] points, D2DColor fillColor)
+    public void FillPolygon(ReadOnlySpan<D2DPoint> points, D2DColor fillColor)
 		{
 			this.DrawPolygon(points, D2DColor.Transparent, 0, D2DDashStyle.Solid, fillColor);
 		}
 
-    [Obsolete("FillPolygon will be removed from later versions. Use DrawPolygon instead")]
-    public void FillPolygon(D2DPoint[] points, D2DBrush brush)
+		[Obsolete("FillPolygon will be removed from later versions. Use DrawPolygon instead")]
+		public unsafe void FillPolygon(ReadOnlySpan<D2DPoint> points, D2DBrush brush)
 		{
-			D2D.DrawPolygonWithBrush(this.Handle, points, (uint)points.Length, D2DColor.Transparent, 0, D2DDashStyle.Solid, brush.Handle);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.DrawPolygonWithBrush(this.Handle, p, (uint)points.Length, D2DColor.Transparent, 0, D2DDashStyle.Solid, brush.Handle);
+			}
 		}
 
 #if DEBUG

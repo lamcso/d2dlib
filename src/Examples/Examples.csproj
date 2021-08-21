@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.4" Condition="'$(TargetFramework)' != 'netcoreapp3.1'" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\D2DLibExport\D2DLibExport.csproj" IncludeAssets="contentFiles" />
     <ProjectReference Include="..\D2DWinForm\D2DWinForm.csproj" IncludeAssets="contentFiles" />
   </ItemGroup>
