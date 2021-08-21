@@ -34,7 +34,6 @@ using HWND = System.IntPtr;
 using HANDLE = System.IntPtr;
 using HRESULT = System.Int64;
 using BOOL = System.Int32;
-using System.Drawing.Drawing2D;
 
 namespace unvell.D2DLib
 {
