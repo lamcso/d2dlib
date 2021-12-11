@@ -1,7 +1,5 @@
 name: Publish to Registry
 
-name: publish-packages
-
 on: 
   workflow_dispatch:
     inputs:
@@ -27,7 +25,7 @@ jobs:
       run: dotnet restore src/D2DLib.sln
 
     - name: Pack
-      run: msbuild src/D2DLibExport/D2DLibExport.csproj /t:pack -p:Configuration=Release /p:DefineConstants=X64 -p:PackageVersion=1.2.3 -p:OutputPath=.dist -t:restore -p:RestorePackagesConfig=true
+      run: msbuild src/D2DLibExport/D2DLibExport.csproj /t:pack -p:Configuration=Release /p:DefineConstants=X64 -p:PackageVersion=${{github.event.inputs.version}} -p:OutputPath=.dist -t:restore -p:RestorePackagesConfig=true
 
     - name: Push
       run: dotnet nuget push src/D2DLibExport/.dist/D2DLibExport.${{github.event.inputs.version}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} -s https://nuget.pkg.github.com/PauloHMattos/index.json --skip-duplicate
