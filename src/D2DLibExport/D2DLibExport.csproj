@@ -3,13 +3,15 @@
   <Import Project="..\NativeLibraries.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net4.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <RootNamespace>unvell.D2DLib</RootNamespace>
     <AssemblyName>d2dlibexport</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.7.1" Condition="'$(TargetFramework)' == 'netstandard2.1'" PrivateAssets="all" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.1" PrivateAssets="all" />
+    <PackageReference Include="System.Memory" Version="4.5.4" Condition="'$(TargetFramework)' != 'netstandard2.1'" PrivateAssets="all" />
   </ItemGroup>
-
+  
 </Project>

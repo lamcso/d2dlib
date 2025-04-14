@@ -1,13 +1,9 @@
 <Project>
 
   <PropertyGroup>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <Platforms>x86;x64</Platforms>
     <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <DefineConstants Condition="'$(Platform)' == 'x86'">$(DefineConstants);X86</DefineConstants>
-    <DefineConstants Condition="'$(Platform)' == 'x64'">$(DefineConstants);X64</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
