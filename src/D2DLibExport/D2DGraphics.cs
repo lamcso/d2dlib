@@ -93,21 +93,28 @@ namespace unvell.D2DLib
 
 		public void DrawLine(FLOAT x1, FLOAT y1, FLOAT x2, FLOAT y2, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat)
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, 
+			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
 		{
-			DrawLine(new D2DPoint(x1, y1), new D2DPoint(x2, y2), color, weight, dashStyle, startCap, endCap);
+			DrawLine(new D2DPoint(x1, y1), new D2DPoint(x2, y2), color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
 		}
 
 		public void DrawLine(D2DPoint start, D2DPoint end, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat)
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat,
+			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
 		{
-			D2D.DrawLine(this.Handle, start, end, color, weight, dashStyle, startCap, endCap);
+			D2D.DrawLine(this.Handle, start, end, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
 		}
 
-		public void DrawLines(D2DPoint[] points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid)
+		public unsafe void DrawLines(ReadOnlySpan<D2DPoint> points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat,
+			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
 		{
-			D2D.DrawLines(this.Handle, points, (uint)points.Length, color, weight, dashStyle);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.DrawLines(this.Handle, p, (uint)points.Length, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
+			}
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -180,41 +187,53 @@ namespace unvell.D2DLib
 			D2D.FillEllipseWithBrush(this.Handle, ref ellipse, brush.Handle);
 		}
 
-		public void DrawBeziers(D2DBezierSegment[] bezierSegments,
+		public unsafe void DrawBeziers(ReadOnlySpan<D2DBezierSegment> bezierSegments,
 			D2DColor strokeColor, FLOAT strokeWidth = 1,
 			D2DDashStyle dashStyle = D2DDashStyle.Solid)
 		{
-			D2D.DrawBeziers(Handle, bezierSegments, (uint)bezierSegments.Length, strokeColor, strokeWidth, dashStyle);
+			fixed (D2DBezierSegment* s = bezierSegments)
+			{
+				D2D.DrawBeziers(Handle, s, (uint)bezierSegments.Length, strokeColor, strokeWidth, dashStyle);
+			}
 		}
 
-		public void DrawPolygon(D2DPoint[] points,
+		public void DrawPolygon(ReadOnlySpan<D2DPoint> points,
 			D2DColor strokeColor, FLOAT strokeWidth = 1f, D2DDashStyle dashStyle = D2DDashStyle.Solid)
 		{
 			this.DrawPolygon(points, strokeColor, strokeWidth, dashStyle, D2DColor.Transparent);
 		}
 
-		public void DrawPolygon(D2DPoint[] points,
+		public unsafe void DrawPolygon(ReadOnlySpan<D2DPoint> points,
 			D2DColor strokeColor, FLOAT strokeWidth, D2DDashStyle dashStyle, D2DColor fillColor)
 		{
-			D2D.DrawPolygon(Handle, points, (uint)points.Length, strokeColor, strokeWidth, dashStyle, fillColor);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.DrawPolygon(Handle, p, (uint)points.Length, strokeColor, strokeWidth, dashStyle, fillColor);
+			}
 		}
 
-		public void DrawPolygon(D2DPoint[] points,
+		public unsafe void DrawPolygon(ReadOnlySpan<D2DPoint> points,
 			D2DColor strokeColor, FLOAT strokeWidth, D2DDashStyle dashStyle, D2DBrush fillBrush)
 		{
-			D2D.DrawPolygonWithBrush(Handle, points, (uint)points.Length, strokeColor, strokeWidth, dashStyle, fillBrush.Handle);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.DrawPolygonWithBrush(Handle, p, (uint)points.Length, strokeColor, strokeWidth, dashStyle, fillBrush.Handle);
+			}
 		}
 
 		[Obsolete("FillPolygon will be removed from later versions. Use DrawPolygon instead")]
-		public void FillPolygon(D2DPoint[] points, D2DColor fillColor)
+    public void FillPolygon(ReadOnlySpan<D2DPoint> points, D2DColor fillColor)
 		{
 			this.DrawPolygon(points, D2DColor.Transparent, 0, D2DDashStyle.Solid, fillColor);
 		}
 
 		[Obsolete("FillPolygon will be removed from later versions. Use DrawPolygon instead")]
-		public void FillPolygon(D2DPoint[] points, D2DBrush brush)
+		public unsafe void FillPolygon(ReadOnlySpan<D2DPoint> points, D2DBrush brush)
 		{
-			D2D.DrawPolygonWithBrush(this.Handle, points, (uint)points.Length, D2DColor.Transparent, 0, D2DDashStyle.Solid, brush.Handle);
+			fixed (D2DPoint* p = points)
+			{
+				D2D.DrawPolygonWithBrush(this.Handle, p, (uint)points.Length, D2DColor.Transparent, 0, D2DDashStyle.Solid, brush.Handle);
+			}
 		}
 
 #if DEBUG

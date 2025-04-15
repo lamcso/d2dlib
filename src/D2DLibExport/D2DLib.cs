@@ -27,26 +27,27 @@ using System.Runtime.InteropServices;
 
 namespace unvell.D2DLib
 {
-	internal static class D2D
+	internal unsafe static class D2D
 	{
+		const string DLL_NAME = "d2dlib.dll";
 
-#if DEBUG
+//#if DEBUG
 
-#if X86
-		const string DLL_NAME = "d2dlib32d.dll";
-#elif X64
-		const string DLL_NAME = "d2dlib64d.dll";
-#endif
+//#if X86
+//		const string DLL_NAME = "d2dlib32d.dll";
+//#elif X64
+//		const string DLL_NAME = "d2dlib64d.dll";
+//#endif
 
-#else // Release
+//#else // Release
 
-#if X86
-		const string DLL_NAME = "d2dlib32.dll";
-#elif X64
-		const string DLL_NAME = "d2dlib64.dll";
-#endif
+//#if X86
+//		const string DLL_NAME = "d2dlib32.dll";
+//#elif X64
+//		const string DLL_NAME = "d2dlib64.dll";
+//#endif
 
-#endif
+//#endif
 
 		#region Device Context
 
@@ -141,11 +142,12 @@ namespace unvell.D2DLib
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void DrawLine(HANDLE context, D2DPoint start, D2DPoint end, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat);
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void DrawLines(HANDLE context, D2DPoint[] points, UINT count, D2DColor color,
-			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid);
+		public static extern void DrawLines(HANDLE context, D2DPoint* points, UINT count, D2DColor color,
+			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void DrawUnconnectedLines(HANDLE context, D2DPoint[] points, UINT count, D2DColor color, FLOAT width);
@@ -284,11 +286,11 @@ namespace unvell.D2DLib
 			[In] HANDLE brushHandle, [Optional] HANDLE opacityBrushHandle);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void DrawPolygon(HANDLE ctx, D2DPoint[] points, UINT count,
+		public static extern void DrawPolygon(HANDLE ctx, D2DPoint* points, UINT count,
 			D2DColor strokeColor, FLOAT strokeWidth, D2DDashStyle dashStyle, D2DColor fillColor);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void DrawPolygonWithBrush(HANDLE ctx, D2DPoint[] points, UINT count,
+		public static extern void DrawPolygonWithBrush(HANDLE ctx, D2DPoint* points, UINT count,
 			D2DColor strokeColor, FLOAT strokeWidth, D2DDashStyle dashStyle, HANDLE brushHandler);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
@@ -298,16 +300,10 @@ namespace unvell.D2DLib
 		public static extern void ClosePath(HANDLE ctx);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void AddPathLines(HANDLE path, D2DPoint[] points, uint count);
-		public static void AddPathLines(HANDLE path, D2DPoint[] points) { AddPathLines(path, points, (uint)points.Length); }
+		public static extern void AddPathLines(HANDLE path, D2DPoint* points, uint count);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void AddPathBeziers(HANDLE ctx, D2DBezierSegment[] bezierSegments, uint count);
-
-		public static void AddPathBeziers(HANDLE ctx, D2DBezierSegment[] bezierSegments)
-		{
-			AddPathBeziers(ctx, bezierSegments, (uint)bezierSegments.Length);
-		}
+		public static extern void AddPathBeziers(HANDLE ctx, D2DBezierSegment* bezierSegments, uint count);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void AddPathEllipse(HANDLE path, ref D2DEllipse ellipse);
@@ -318,7 +314,7 @@ namespace unvell.D2DLib
 			D2DSweepDirection sweepDirection = D2DSweepDirection.Clockwise);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void DrawBeziers(HANDLE ctx, D2DBezierSegment[] bezierSegments, UINT count,
+		public static extern void DrawBeziers(HANDLE ctx, D2DBezierSegment* bezierSegments, UINT count,
 															D2DColor strokeColor, FLOAT strokeWidth = 1,
 															D2DDashStyle dashStyle = D2DDashStyle.Solid);
 

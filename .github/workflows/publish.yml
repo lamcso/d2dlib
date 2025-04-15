@@ -1,0 +1,45 @@
+name: Publish to Registry
+
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        default: '0.0.0'
+        required: true
+
+env:
+  DOTNET_NOLOGO: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/nuget'
+
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET 5
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        
+    - name: Restore
+      run: dotnet restore src/D2DLib.sln
+
+    - name: Build Native Library
+      run: |
+        msbuild src/d2dlib/D2DLib.vcxproj -p:Configuration=Release -p:Platform="x64"
+        msbuild src/d2dlib/D2DLib.vcxproj -p:Configuration=Release -p:Platform="x86"
+
+    - name: Pack Managed Libraries
+      run: msbuild src/D2DWinForm/D2DWinForm.csproj /t:pack -p:Configuration=Release -p:OutputPath=.dist -p:PackageVersion=${{github.event.inputs.version}}
+
+    - name: Publish the package to GPR
+      run: dotnet nuget push src/D2DWinForm/.dist/D2DLib.${{github.event.inputs.version}}.nupkg

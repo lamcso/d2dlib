@@ -34,19 +34,19 @@ namespace unvell.D2DLib.Examples.SampleCode
 		protected override void OnRender(D2DGraphics g)
 		{
 			g.DrawText("Flat", D2DColor.DimGray, "Arials", 20, 110, 83);
-			g.DrawLine(300, 100, 600, 100, D2DColor.Black, 20, D2DDashStyle.Solid, D2DCapStyle.Flat, D2DCapStyle.Flat);
+			g.DrawLine(300, 100, 600, 100, D2DColor.Black, 20, D2DDashStyle.DashDot, D2DCapStyle.Flat, D2DCapStyle.Flat, D2DCapStyle.Flat);
   
 			g.DrawText("Round", D2DColor.DimGray, "Arials", 20, 110, 183);
-			g.DrawLine(300, 200, 600, 200, D2DColor.Black, 20, D2DDashStyle.Solid, D2DCapStyle.Round, D2DCapStyle.Round);
+			g.DrawLine(300, 200, 600, 200, D2DColor.Black, 20, D2DDashStyle.DashDot, D2DCapStyle.Round, D2DCapStyle.Round, D2DCapStyle.Round);
 
 			g.DrawText("Square", D2DColor.DimGray, "Arials", 20, 110, 283);
-			g.DrawLine(300, 300, 600, 300, D2DColor.Black, 20, D2DDashStyle.Solid, D2DCapStyle.Square, D2DCapStyle.Square);
+			g.DrawLine(300, 300, 600, 300, D2DColor.Black, 20, D2DDashStyle.DashDot, D2DCapStyle.Square, D2DCapStyle.Square, D2DCapStyle.Square);
 
 			g.DrawText("Triangle", D2DColor.DimGray, "Arials", 20, 110, 383);
-			g.DrawLine(300, 400, 600, 400, D2DColor.Black, 20, D2DDashStyle.Solid, D2DCapStyle.Triangle, D2DCapStyle.Triangle);
+			g.DrawLine(300, 400, 600, 400, D2DColor.Black, 20, D2DDashStyle.DashDot, D2DCapStyle.Triangle, D2DCapStyle.Triangle, D2DCapStyle.Triangle);
 
 			g.DrawText("Round, Triangle", D2DColor.DimGray, "Arials", 20, 110, 483);
-			g.DrawLine(300, 500, 600, 500, D2DColor.Black, 20, D2DDashStyle.Solid, D2DCapStyle.Round, D2DCapStyle.Triangle);
+			g.DrawLine(300, 500, 600, 500, D2DColor.Black, 20, D2DDashStyle.DashDot, D2DCapStyle.Round, D2DCapStyle.Triangle, D2DCapStyle.Triangle);
 		}
 	}
 
