@@ -22,32 +22,19 @@
  * SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-
-using FLOAT = System.Single;
-using UINT = System.UInt32;
-using UINT32 = System.UInt32;
-using HWND = System.IntPtr;
-using HANDLE = System.IntPtr;
-using HRESULT = System.Int64;
-using BOOL = System.Int32;
-
 namespace unvell.D2DLib
 {
-  public class D2DBitmap : D2DObject
-  {
-    public D2DSize Size { get; private set; }
+	public class D2DBitmap : D2DObject
+	{
+		public D2DSize Size { get; private set; }
 
-    public FLOAT Height { get { return this.Size.height; } }
-    public FLOAT Width { get { return this.Size.width; } }
+		public FLOAT Height { get { return this.Size.height; } }
+		public FLOAT Width { get { return this.Size.width; } }
 
-    internal D2DBitmap(HANDLE handle)
-      : base(handle)
-    {
-      this.Size = D2D.GetBitmapSize(handle);
-    }
-  }
+		internal D2DBitmap(HANDLE handle)
+		  : base(handle)
+		{
+			this.Size = D2D.GetBitmapSize(handle);
+		}
+	}
 }

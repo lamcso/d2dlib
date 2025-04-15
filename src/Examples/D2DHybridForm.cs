@@ -22,9 +22,6 @@
  * SOFTWARE.
  */
 
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using unvell.D2DLib.WinForm;
 
 namespace unvell.D2DLib.Examples
@@ -153,7 +150,7 @@ namespace unvell.D2DLib.Examples
 		/// <param name="ag">Graphics context supports both GDI+ and Direct2D rendering.</param>
 		protected virtual void OnDraw(IHybridGraphics ag)
 		{
-			ag.DrawString("Hello World", Font, Color.Black, 
+			ag.DrawString("Hello World", Font, Color.Black,
 				this.ClientRectangle.Width / 2 - 30, this.ClientRectangle.Height / 2 - 20);
 		}
 
@@ -200,7 +197,7 @@ namespace unvell.D2DLib.Examples
 		public uint* Buffer { get { return this.buffer; } }
 		public IntPtr BufferPtr { get { return (IntPtr)this.buffer; } }
 
-		public int BufferSize  { get; private set; }
+		public int BufferSize { get; private set; }
 		public int Width { get; private set; }
 		public int Height { get; private set; }
 		public int PixelCount { get; private set; }
@@ -566,7 +563,7 @@ namespace unvell.D2DLib.Examples
 		{
 		}
 
-	
+
 	}
 
 	interface IHybridGraphics

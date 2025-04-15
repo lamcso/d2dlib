@@ -1,4 +1,4 @@
-/*
+﻿/*
 * MIT License
 *
 * Copyright (c) 2009-2021 Jingwood, unvell.com. All right reserved.
@@ -26,23 +26,9 @@
 
 #include "Context.h"
 
-enum BrushType {
-	BrushType_SolidBrush,
-	BrushType_LinearGradientBrush,
-	BrushType_RadialGradientBrush,
-};
-
-struct BrushContext {
-	D2DContext* context;
-	ID2D1Brush* brush;
-	BrushType type;
-	union {
-		ID2D1GradientStopCollection* gradientStops = NULL;
-	};
-};
-
 extern "C"
 {
+	D2DLIB_API HANDLE CreateSolidColorBrushContext(HANDLE ctx, D2D1_COLOR_F color);
 	D2DLIB_API HANDLE CreateSolidColorBrush(HANDLE ctx, D2D1_COLOR_F color);
 	D2DLIB_API void SetSolidColorBrushColor(HANDLE brush, D2D1_COLOR_F color);
 
@@ -52,6 +38,10 @@ extern "C"
 	D2DLIB_API HANDLE CreateRadialGradientBrush(HANDLE ctx, D2D1_POINT_2F origin, D2D1_POINT_2F offset,
 																						  FLOAT radiusX, FLOAT radiusY, D2D1_GRADIENT_STOP* gradientStops, 
 																							UINT gradientStopCount);
+
+	D2DLIB_API HANDLE CreateBitmapBrush(HANDLE ctx, ID2D1Bitmap* bitmap, 
+		D2D1_EXTEND_MODE extendModeX, D2D1_EXTEND_MODE extendModeY, 
+		D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 
 	D2DLIB_API void ReleaseBrush(HANDLE brushHandle);
 }

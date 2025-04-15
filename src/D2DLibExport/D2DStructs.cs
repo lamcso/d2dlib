@@ -22,10 +22,7 @@
 * SOFTWARE.
 */
 
-using System;
 using System.Runtime.InteropServices;
-
-using FLOAT = System.Single;
 
 namespace unvell.D2DLib
 {
@@ -60,7 +57,8 @@ namespace unvell.D2DLib
 			this.b = color.b;
 		}
 
-		public static D2DColor operator *(D2DColor c, float s) {
+		public static D2DColor operator *(D2DColor c, float s)
+		{
 			return new D2DColor(c.a, c.r * s, c.g * s, c.b * s);
 		}
 
@@ -105,7 +103,8 @@ namespace unvell.D2DLib
 		/// Create color by randomly color components.
 		/// </summary>
 		/// <returns></returns>
-		public static D2DColor Randomly() {
+		public static D2DColor Randomly()
+		{
 			return new D2DColor(1, (float)rand.NextDouble(), (float)rand.NextDouble(),
 				(float)rand.NextDouble());
 		}
@@ -122,9 +121,9 @@ namespace unvell.D2DLib
 		public static readonly D2DColor White = D2DColor.FromGDIColor(System.Drawing.Color.White);
 		public static readonly D2DColor SlateGray = D2DColor.FromGDIColor(System.Drawing.Color.SlateGray);
 		public static readonly D2DColor DarkSlateGray = D2DColor.FromGDIColor(System.Drawing.Color.DarkSlateGray);
-    public static readonly D2DColor WhiteSmoke = D2DColor.FromGDIColor(System.Drawing.Color.WhiteSmoke);
+		public static readonly D2DColor WhiteSmoke = D2DColor.FromGDIColor(System.Drawing.Color.WhiteSmoke);
 
-    public static readonly D2DColor Red = D2DColor.FromGDIColor(System.Drawing.Color.Red);
+		public static readonly D2DColor Red = D2DColor.FromGDIColor(System.Drawing.Color.Red);
 		public static readonly D2DColor DarkRed = D2DColor.FromGDIColor(System.Drawing.Color.DarkRed);
 		public static readonly D2DColor PaleVioletRed = D2DColor.FromGDIColor(System.Drawing.Color.PaleVioletRed);
 		public static readonly D2DColor OrangeRed = D2DColor.FromGDIColor(System.Drawing.Color.OrangeRed);
@@ -139,7 +138,7 @@ namespace unvell.D2DLib
 		public static readonly D2DColor Yellow = D2DColor.FromGDIColor(System.Drawing.Color.Yellow);
 		public static readonly D2DColor Gold = D2DColor.FromGDIColor(System.Drawing.Color.Gold);
 		public static readonly D2DColor Goldenrod = D2DColor.FromGDIColor(System.Drawing.Color.Goldenrod);
-    public static readonly D2DColor LightGoldenrodYellow = D2DColor.FromGDIColor(System.Drawing.Color.LightGoldenrodYellow);
+		public static readonly D2DColor LightGoldenrodYellow = D2DColor.FromGDIColor(System.Drawing.Color.LightGoldenrodYellow);
 		public static readonly D2DColor Orange = D2DColor.FromGDIColor(System.Drawing.Color.Orange);
 		public static readonly D2DColor DarkOrange = D2DColor.FromGDIColor(System.Drawing.Color.DarkOrange);
 		public static readonly D2DColor BurlyWood = D2DColor.FromGDIColor(System.Drawing.Color.BurlyWood);
@@ -168,20 +167,20 @@ namespace unvell.D2DLib
 		public static readonly D2DColor PowderBlue = D2DColor.FromGDIColor(System.Drawing.Color.PowderBlue);
 		public static readonly D2DColor CornflowerBlue = D2DColor.FromGDIColor(System.Drawing.Color.CornflowerBlue);
 
-    public static readonly D2DColor Cyan = D2DColor.FromGDIColor(System.Drawing.Color.Cyan);
-    public static readonly D2DColor DarkCyan = D2DColor.FromGDIColor(System.Drawing.Color.DarkCyan);
-    public static readonly D2DColor LightCyan = D2DColor.FromGDIColor(System.Drawing.Color.LightCyan);
+		public static readonly D2DColor Cyan = D2DColor.FromGDIColor(System.Drawing.Color.Cyan);
+		public static readonly D2DColor DarkCyan = D2DColor.FromGDIColor(System.Drawing.Color.DarkCyan);
+		public static readonly D2DColor LightCyan = D2DColor.FromGDIColor(System.Drawing.Color.LightCyan);
 
-    public static readonly D2DColor Cornsilk = D2DColor.FromGDIColor(System.Drawing.Color.Cornsilk);
-    public static readonly D2DColor Thistle = D2DColor.FromGDIColor(System.Drawing.Color.Thistle);
-    public static readonly D2DColor Tomato = D2DColor.FromGDIColor(System.Drawing.Color.Tomato);
+		public static readonly D2DColor Cornsilk = D2DColor.FromGDIColor(System.Drawing.Color.Cornsilk);
+		public static readonly D2DColor Thistle = D2DColor.FromGDIColor(System.Drawing.Color.Thistle);
+		public static readonly D2DColor Tomato = D2DColor.FromGDIColor(System.Drawing.Color.Tomato);
 
-    public static readonly D2DColor Pink = D2DColor.FromGDIColor(System.Drawing.Color.Pink);
-    public static readonly D2DColor DeepPink = D2DColor.FromGDIColor(System.Drawing.Color.DeepPink);
-    public static readonly D2DColor HotPink = D2DColor.FromGDIColor(System.Drawing.Color.HotPink);
-    public static readonly D2DColor LightPink = D2DColor.FromGDIColor(System.Drawing.Color.LightPink);
+		public static readonly D2DColor Pink = D2DColor.FromGDIColor(System.Drawing.Color.Pink);
+		public static readonly D2DColor DeepPink = D2DColor.FromGDIColor(System.Drawing.Color.DeepPink);
+		public static readonly D2DColor HotPink = D2DColor.FromGDIColor(System.Drawing.Color.HotPink);
+		public static readonly D2DColor LightPink = D2DColor.FromGDIColor(System.Drawing.Color.LightPink);
 	}
-	#endregion
+	#endregion // D2DColor
 
 	#region Rect
 	[Serializable]
@@ -202,8 +201,9 @@ namespace unvell.D2DLib
 		}
 
 		public D2DRect(D2DPoint origin, D2DSize size)
-			: this(origin.x - size.width * 0.5f, origin.y - size.height * 0.5f, size.width, size.height)
-		{ }
+			: this(origin.X - size.width * 0.5f, origin.Y - size.height * 0.5f, size.width, size.height)
+		{
+		}
 
 		public D2DPoint Location
 		{
@@ -212,10 +212,10 @@ namespace unvell.D2DLib
 			{
 				FLOAT width = this.right - this.left;
 				FLOAT height = this.bottom - this.top;
-				this.left = value.x;
-				this.right = value.x + width;
-				this.top = value.y;
-				this.bottom = value.y + height;
+				this.left = value.X;
+				this.right = value.X + width;
+				this.top = value.Y;
+				this.bottom = value.Y + height;
 			}
 		}
 
@@ -274,6 +274,28 @@ namespace unvell.D2DLib
 			}
 		}
 
+		public Vector2 Origin
+		{
+			get => new Vector2(this.X + this.Width * 0.5f, this.Y + this.Height * 0.5f);
+		}
+
+		/// <summary>
+		/// Creates a rectangle that has its upper-left corner set to (negative infinity, negative infinity) and its lower-right corner set to (infinity, infinity).
+		/// Corresponds to [`InfiniteRect()`](https://learn.microsoft.com/en-us/windows/win32/api/d2d1helper/nf-d2d1helper-infiniterect).
+		/// </summary>
+		public static D2DRect Infinite
+		{
+			get
+			{
+				var rect = new D2DRect(0, 0, 0, 0);
+				rect.left = float.NegativeInfinity;
+				rect.top = float.NegativeInfinity;
+				rect.right = float.PositiveInfinity;
+				rect.bottom = float.PositiveInfinity;
+				return rect;
+			}
+		}
+
 		public static implicit operator D2DRect(System.Drawing.Rectangle rect)
 		{
 			return new D2DRect(rect.X, rect.Y, rect.Width, rect.Height);
@@ -294,7 +316,7 @@ namespace unvell.D2DLib
 			return System.Drawing.Rectangle.Round(rect);
 		}
 	}
-	#endregion Rect
+	#endregion // Rect
 
 	#region Rounded Rect
 
@@ -307,75 +329,6 @@ namespace unvell.D2DLib
 		public FLOAT radiusY;
 	}
 	#endregion Rounded Rect
-
-	#region Point
-	[Serializable]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2DPoint
-	{
-		public FLOAT x;
-		public FLOAT y;
-
-		public D2DPoint(FLOAT x, FLOAT y)
-		{
-			this.x = x;
-			this.y = y;
-		}
-
-		public void Offset(FLOAT offx, FLOAT offy)
-		{
-			this.x += offx;
-			this.y += offy;
-		}
-
-		public static readonly D2DPoint Zero = new D2DPoint(0, 0);
-		public static readonly D2DPoint One = new D2DPoint(1, 1);
-
-		public override bool Equals(object obj)
-		{
-			if (!(obj is D2DPoint)) return false;
-
-			var p2 = (D2DPoint)obj;
-
-			return x == p2.x && y == p2.y;
-		}
-
-		public static bool operator==(D2DPoint p1, D2DPoint p2)
-		{
-			return p1.x == p2.x && p1.y == p2.y;
-		}
-
-		public static bool operator !=(D2DPoint p1, D2DPoint p2)
-		{
-			return p1.x != p2.x || p1.y != p2.y;
-		}
-
-		public static implicit operator D2DPoint(System.Drawing.Point p)
-		{
-			return new D2DPoint(p.X, p.Y);
-		}
-
-		public static implicit operator D2DPoint(System.Drawing.PointF p)
-		{
-			return new D2DPoint(p.X, p.Y);
-		}
-
-		public static implicit operator System.Drawing.PointF(D2DPoint p)
-		{
-			return new System.Drawing.PointF(p.x, p.y);
-		}
-
-		public static explicit operator System.Drawing.Point(D2DPoint p)
-		{
-			return System.Drawing.Point.Round(p);
-		}
-
-		public override int GetHashCode()
-		{
-			return (int)((this.x * 0xff) + this.y);
-		}
-	}
-	#endregion
 
 	#region Size
 	[Serializable]
@@ -392,6 +345,16 @@ namespace unvell.D2DLib
 		}
 
 		public static readonly D2DSize Empty = new D2DSize(0, 0);
+
+		public static implicit operator D2DSize(Vector2 v)
+		{
+			return new D2DSize(v.X, v.Y);
+		}
+
+		public static implicit operator Vector2(D2DSize v)
+		{
+			return new Vector2(v.width, v.height);
+		}
 
 		public static implicit operator D2DSize(System.Drawing.Size wsize)
 		{
@@ -447,8 +410,17 @@ namespace unvell.D2DLib
 		{
 		}
 
-		public FLOAT X { get { return origin.x; } set { origin.x = value; } }
-		public FLOAT Y { get { return origin.y; } set { origin.y = value; } }
+		/// <summary>
+		/// Create an ellipse range to fit and fill the given rectangle.
+		/// </summary>
+		/// <param name="rect"></param>
+		public D2DEllipse(D2DRect rect)
+			: this(rect.Origin, rect.Width * 0.5f, rect.Height * 0.5f)
+		{
+		}
+
+		public FLOAT X { get { return origin.X; } set { origin.X = value; } }
+		public FLOAT Y { get { return origin.Y; } set { origin.Y = value; } }
 	}
 	#endregion
 
@@ -475,23 +447,6 @@ namespace unvell.D2DLib
 			this.point3 = new D2DPoint(x3, y3);
 		}
 	}
-	#endregion
+	#endregion // BezierSegment
 
-	#region Matrix
-	[Serializable]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2DMatrix3x2
-	{
-		public FLOAT a1, b1;
-		public FLOAT a2, b2;
-		public FLOAT a3, b3;
-
-		public D2DMatrix3x2(float a1, float b1, float a2, float b2, float a3, float b3) {
-			this.a1 = a1; this.b1 = b1;
-			this.a2 = a2; this.b2 = b2;
-			this.a3 = a3; this.b3 = b3;
-		}
-	}
-
-	#endregion // Matrix
 }

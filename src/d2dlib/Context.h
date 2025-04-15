@@ -1,4 +1,4 @@
-/*
+﻿/*
 * MIT License
 *
 * Copyright (c) 2009-2021 Jingwood, unvell.com. All right reserved.
@@ -74,6 +74,23 @@ typedef struct D2DGeometryContext {
 	ID2D1Geometry* geometry;
 } D2DGeometryContext;
 
+enum BrushType {
+	BrushType_SolidBrush,
+	BrushType_LinearGradientBrush,
+	BrushType_RadialGradientBrush,
+	BrushType_BitmapBrush
+};
+
+struct D2DBrushContext {
+	D2DContext* context;
+	ID2D1Brush* brush;
+	BrushType type;
+	union {
+		ID2D1GradientStopCollection* gradientStops = NULL;
+		ID2D1Bitmap* bitmap;
+	};
+};
+
 typedef struct D2DPathContext : D2DGeometryContext
 {
 	ID2D1PathGeometry* path;
@@ -121,12 +138,14 @@ inline void SafeRelease(Interface **ppInterfaceToRelease)
 
 extern "C" 
 {
-	D2DLIB_API HANDLE CreateContext(HWND hwnd);
+	D2DLIB_API HANDLE CreateContext(HWND hwnd, D2D1_PRESENT_OPTIONS presentOptions);
 	D2DLIB_API void DestroyContext(HANDLE context);
 	D2DLIB_API void ResizeContext(HANDLE context);
 	
 	D2DLIB_API void SetContextProperties(HANDLE ctx,
 		D2D1_ANTIALIAS_MODE antialiasMode = D2D1_ANTIALIAS_MODE::D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+
+	D2DLIB_API void SetTextAntialiasMode(HANDLE ctx, D2D1_TEXT_ANTIALIAS_MODE antialiasMode);
 	
 	D2DLIB_API void BeginRender(HANDLE context);
 	D2DLIB_API void BeginRenderWithBackgroundColor(HANDLE ctx, D2D1_COLOR_F color);
@@ -149,8 +168,8 @@ extern "C"
 	D2DLIB_API void PopClip(HANDLE context);
 
 	D2DLIB_API HANDLE CreateLayer(HANDLE context);
-	D2DLIB_API void PushLayer(HANDLE ctx, HANDLE layerHandle, D2D1_RECT_F& contentBounds = D2D1::InfiniteRect(),
-		__in_opt HANDLE geometryHandle = NULL, __in_opt ID2D1Brush *opacityBrush = NULL, 
+	D2DLIB_API void PushLayer(HANDLE ctx, HANDLE layerHandle, D2D1_RECT_F contentBounds = D2D1::InfiniteRect(),
+		__in_opt HANDLE geometryHandle = NULL, __in_opt HANDLE opacityBrush = NULL, 
 		D2D1_LAYER_OPTIONS layerOptions = D2D1_LAYER_OPTIONS_NONE);
 	D2DLIB_API void PopLayer(HANDLE ctx);
 

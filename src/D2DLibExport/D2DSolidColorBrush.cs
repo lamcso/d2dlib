@@ -22,41 +22,28 @@
  * SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-
-using FLOAT = System.Single;
-using UINT = System.UInt32;
-using UINT32 = System.UInt32;
-using HWND = System.IntPtr;
-using HANDLE = System.IntPtr;
-using HRESULT = System.Int64;
-using BOOL = System.Int32;
-
 namespace unvell.D2DLib
 {
-  public class D2DSolidColorBrush : D2DBrush
-  {
-    private D2DColor color;
+	public class D2DSolidColorBrush : D2DBrush
+	{
+		private D2DColor color;
 
-    public D2DColor Color
-    {
-      get
-      {
-        return color;
-      }
-      set
-      {
-        D2D.SetSolidColorBrushColor(this.Handle, this.color = value);
-      }
-    }
+		public D2DColor Color
+		{
+			get
+			{
+				return color;
+			}
+			set
+			{
+				D2D.SetSolidColorBrushColor(this.Handle, this.color = value);
+			}
+		}
 
-    internal D2DSolidColorBrush(HANDLE handle, D2DColor color)
-      : base(handle)
-    {
-      this.color = color;
-    }
-  }
+		internal D2DSolidColorBrush(HANDLE handle, D2DColor color)
+		  : base(handle)
+		{
+			this.color = color;
+		}
+	}
 }

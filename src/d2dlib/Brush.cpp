@@ -1,4 +1,4 @@
-/*
+﻿/*
 * MIT License
 *
 * Copyright (c) 2009-2021 Jingwood, unvell.com. All right reserved.
@@ -24,24 +24,24 @@
 
 #include "stdafx.h"
 #include "Brush.h"
-
-HANDLE CreateStrokeStyle(HANDLE ctx, FLOAT* dashes, UINT dashCount)
-{
-	RetrieveContext(ctx);
-
-	ID2D1StrokeStyle* strokeStyle;
-
-	context->factory->CreateStrokeStyle(D2D1::StrokeStyleProperties(
-            D2D1_CAP_STYLE_FLAT,
-            D2D1_CAP_STYLE_FLAT,
-            D2D1_CAP_STYLE_ROUND,
-            D2D1_LINE_JOIN_MITER,
-            10.0f,
-            D2D1_DASH_STYLE_CUSTOM,
-            0.0f), dashes, dashCount, &strokeStyle);
-
-	return (HANDLE)strokeStyle;
-}
+//
+//HANDLE CreateStrokeStyle(HANDLE ctx, FLOAT* dashes, UINT dashCount)
+//{
+//	RetrieveContext(ctx);
+//
+//	ID2D1StrokeStyle* strokeStyle;
+//
+//	context->factory->CreateStrokeStyle(D2D1::StrokeStyleProperties(
+//            D2D1_CAP_STYLE_FLAT,
+//            D2D1_CAP_STYLE_FLAT,
+//            D2D1_CAP_STYLE_ROUND,
+//            D2D1_LINE_JOIN_MITER,
+//            10.0f,
+//            D2D1_DASH_STYLE_CUSTOM,
+//            0.0f), dashes, dashCount, &strokeStyle);
+//
+//	return (HANDLE)strokeStyle;
+//}
 
 HANDLE CreateSolidColorBrush(HANDLE ctx, D2D1_COLOR_F color)
 {
@@ -49,8 +49,8 @@ HANDLE CreateSolidColorBrush(HANDLE ctx, D2D1_COLOR_F color)
 
 	ID2D1SolidColorBrush* brush;
 	context->renderTarget->CreateSolidColorBrush(color, &brush);
-	
-	BrushContext* brushContext = new BrushContext();
+
+	D2DBrushContext* brushContext = new D2DBrushContext();
 	brushContext->context = context;
 	brushContext->type = BrushType::BrushType_SolidBrush;
 	brushContext->brush = brush;
@@ -60,7 +60,7 @@ HANDLE CreateSolidColorBrush(HANDLE ctx, D2D1_COLOR_F color)
 
 void SetSolidColorBrushColor(HANDLE brushHandle, D2D1_COLOR_F color)
 {
-	BrushContext* brushContext = reinterpret_cast<BrushContext*>(brushHandle);
+	D2DBrushContext* brushContext = reinterpret_cast<D2DBrushContext*>(brushHandle);
 	ID2D1SolidColorBrush* brush = reinterpret_cast<ID2D1SolidColorBrush*>(brushContext->brush);
 	brush->SetColor(color);
 }
@@ -77,7 +77,7 @@ HANDLE CreateLinearGradientBrush(HANDLE ctx, D2D1_POINT_2F startPoint, D2D1_POIN
 	hr = renderTarget->CreateGradientStopCollection(gradientStops, gradientStopCount, &gradientStopCollection);
 
 	ID2D1LinearGradientBrush* brush = NULL;
-	BrushContext* brushContext = NULL;
+	D2DBrushContext* brushContext = NULL;
 
 	if (SUCCEEDED(hr))
 	{
@@ -85,12 +85,37 @@ HANDLE CreateLinearGradientBrush(HANDLE ctx, D2D1_POINT_2F startPoint, D2D1_POIN
 			D2D1::LinearGradientBrushProperties(startPoint, endPoint), gradientStopCollection, &brush);
 
 		if (SUCCEEDED(hr)) {
-			brushContext = new BrushContext();
+			brushContext = new D2DBrushContext();
 			brushContext->context = context;
 			brushContext->type = BrushType::BrushType_LinearGradientBrush;
 			brushContext->brush = brush;
 			brushContext->gradientStops = gradientStopCollection;
 		}
+	}
+
+	return (HANDLE)brushContext;
+}
+
+HANDLE CreateBitmapBrush(HANDLE ctx, ID2D1Bitmap* bitmap,
+	D2D1_EXTEND_MODE extendModeX, D2D1_EXTEND_MODE extendModeY,
+	D2D1_BITMAP_INTERPOLATION_MODE interpolationMode)
+{
+	RetrieveContext(ctx);
+	ID2D1RenderTarget* renderTarget = context->renderTarget;
+	HRESULT hr;
+
+	ID2D1BitmapBrush* brush = NULL;
+	D2DBrushContext* brushContext = NULL;
+	
+	hr = renderTarget->CreateBitmapBrush(bitmap, 
+		D2D1::BitmapBrushProperties(extendModeX, extendModeY, interpolationMode), &brush);
+		
+	if (SUCCEEDED(hr)) {
+		brushContext = new D2DBrushContext();
+		brushContext->context = context;
+		brushContext->type = BrushType::BrushType_BitmapBrush;
+		brushContext->brush = brush;
+		brushContext->bitmap = bitmap;
 	}
 
 	return (HANDLE)brushContext;
@@ -110,7 +135,7 @@ HANDLE CreateRadialGradientBrush(HANDLE ctx, D2D1_POINT_2F origin, D2D1_POINT_2F
 		gradientStops, gradientStopCount, &gradientStopCollection);
 	
 	ID2D1RadialGradientBrush* brush = NULL;
-	BrushContext* brushContext = NULL;
+	D2DBrushContext* brushContext = NULL;
 
 	if (SUCCEEDED(hr)) 
 	{
@@ -118,7 +143,7 @@ HANDLE CreateRadialGradientBrush(HANDLE ctx, D2D1_POINT_2F origin, D2D1_POINT_2F
 			origin, offset, radiusX, radiusY), gradientStopCollection, &brush);
 
 		if (SUCCEEDED(hr)) {
-			brushContext = new BrushContext();
+			brushContext = new D2DBrushContext();
 			brushContext->context = context;
 			brushContext->type = BrushType::BrushType_RadialGradientBrush;
 			brushContext->brush = brush;
@@ -131,13 +156,18 @@ HANDLE CreateRadialGradientBrush(HANDLE ctx, D2D1_POINT_2F origin, D2D1_POINT_2F
 
 void ReleaseBrush(HANDLE brushHandle)
 {
-	BrushContext* brushContext = reinterpret_cast<BrushContext*>(brushHandle);
+	D2DBrushContext* brushContext = reinterpret_cast<D2DBrushContext*>(brushHandle);
 
 	switch (brushContext->type)
 	{
 	case BrushType::BrushType_LinearGradientBrush:
 	case BrushType::BrushType_RadialGradientBrush:
 		SafeRelease(&brushContext->gradientStops);
+		break;
+	case BrushType::BrushType_BitmapBrush:
+		// Don't release the bitmap since it may be used elsewhere.
+		// The bitmap should be released where it was originally created.
+		//SafeRelease(&brushContext->bitmap);
 		break;
 	}
 

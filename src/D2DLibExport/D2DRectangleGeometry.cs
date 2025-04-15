@@ -22,26 +22,13 @@
  * SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-
-using FLOAT = System.Single;
-using UINT = System.UInt32;
-using UINT32 = System.UInt32;
-using HWND = System.IntPtr;
-using HANDLE = System.IntPtr;
-using HRESULT = System.Int64;
-using BOOL = System.Int32;
-
 namespace unvell.D2DLib
 {
-  public class D2DRectangleGeometry : D2DGeometry
-  {
-    internal D2DRectangleGeometry(HANDLE deviceHandle, HANDLE geoHandle)
-      : base(deviceHandle, geoHandle)
-    {
-    }
-  }
+	public class D2DRectangleGeometry : D2DGeometry
+	{
+		internal D2DRectangleGeometry(D2DDevice device, HANDLE geoHandle)
+		  : base(device, geoHandle)
+		{
+		}
+	}
 }

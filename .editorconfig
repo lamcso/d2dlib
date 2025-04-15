@@ -4,11 +4,16 @@
 root = true
 
 # Don't use tabs for indentation.
-[*.cs]
-indent_style = tabs
-indent_size = 2
+[*.{cs,c,cpp,h,hpp}]
+indent_style = tab
+indent_size = tab
+tab_width = 4
 insert_final_newline = true
 charset = utf-8-bom
+
+[*.{yaml,yml}]
+indent_style = space
+indent_size = 2
 
 # XML project files
 [*.{csproj,props,targets}]

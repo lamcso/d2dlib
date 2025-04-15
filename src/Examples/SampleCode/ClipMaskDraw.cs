@@ -22,12 +22,6 @@
 * SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using unvell.D2DLib.WinForm;
-
 namespace unvell.D2DLib.Examples.SampleCode
 {
 	public partial class ClipMaskDraw : ExampleForm
@@ -36,36 +30,36 @@ namespace unvell.D2DLib.Examples.SampleCode
 		{
 			Text = "ClipMaskDraw - d2dlib Examples";
 
-      AnimationDraw = true;
+			AnimationDraw = true;
 		}
 
-    double offsetX = 0;
-    double waveWidth = 100;
-    double t = 0;
+		double offsetX = 0;
+		double waveWidth = 100;
+		double t = 0;
 
 		protected override void OnRender(D2DGraphics g)
-    {
-      using (var path = this.Device.CreateEllipseGeometry(
-        new D2DPoint((float)(340 + waveWidth * offsetX), 200), new D2DSize(130, 130)))
-      {
-        using (var layer = g.PushLayer(path))
-        {
-          g.FillRectangle(ClientRectangle, new D2DColor(.7f, .7f, .7f));
+		{
+			using (var path = this.Device.CreateEllipseGeometry(
+			  new D2DPoint((float)(340 + waveWidth * offsetX), 200), new D2DSize(130, 130)))
+			{
+				using (var layer = g.PushLayer(path))
+				{
+					g.FillRectangle(ClientRectangle, new D2DColor(.7f, .7f, .7f));
 
-          g.DrawText("Text drawed via Direct2D API (d2dlib)", D2DColor.Blue, "Arial", 24, 140, 180);
+					g.DrawText("Text drawed via Direct2D API (d2dlib)", D2DColor.Blue, "Arial", 24, 140, 180);
 
-          g.PopLayer();
-        }
-      }
-    }
+					g.PopLayer();
+				}
+			}
+		}
 
-    protected override void OnFrame()
-    {
-      offsetX = Math.Sin(t);
-      t += .03;
+		protected override void OnFrame()
+		{
+			offsetX = Math.Sin(t);
+			t += .03;
 
-      SceneChanged = true;
-    }
-  }
+			SceneChanged = true;
+		}
+	}
 
 }

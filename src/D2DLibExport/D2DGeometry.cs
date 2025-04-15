@@ -22,48 +22,35 @@
  * SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-
-using FLOAT = System.Single;
-using UINT = System.UInt32;
-using UINT32 = System.UInt32;
-using HWND = System.IntPtr;
-using HANDLE = System.IntPtr;
-using HRESULT = System.Int64;
-using BOOL = System.Int32;
-
 namespace unvell.D2DLib
 {
-  public class D2DGeometry : D2DObject
-  {
-    internal HANDLE DeviceHandle { get; private set; }
+	public class D2DGeometry : D2DObject
+	{
+		internal D2DDevice Device { get; private set; }
 
-    internal D2DGeometry(HANDLE deviceHandle, HANDLE geoHandle)
-      : base(geoHandle)
-    {
-      this.DeviceHandle = deviceHandle;
-    }
+		internal D2DGeometry(D2DDevice device, HANDLE geoHandle)
+		  : base(geoHandle)
+		{
+			this.Device = device;
+		}
 
-    // FIXME: TO be implemented
-    //public void FillGeometry(D2DBrush brush, [Optional] D2DBrush opacityBrush)
-    //{
-    //  // TODO
-    //}
+		// FIXME: TO be implemented
+		//public void FillGeometry(D2DBrush brush, [Optional] D2DBrush opacityBrush)
+		//{
+		//  // TODO
+		//}
 
-    public D2DRect GetBounds()
-    {
-      var rect = new D2DRect();
-      D2D.GetGeometryBounds(this.Handle, ref rect);
-      return rect;
-    }
+		public D2DRect GetBounds()
+		{
+			var rect = new D2DRect();
+			D2D.GetGeometryBounds(this.Handle, ref rect);
+			return rect;
+		}
 
-    public override void Dispose()
-    {
-      if (this.Handle != IntPtr.Zero) D2D.DestroyGeometry(this.Handle);
-      this.handle = IntPtr.Zero;
-    }
-  }
+		public override void Dispose()
+		{
+			if (this.Handle != IntPtr.Zero) D2D.DestroyGeometry(this.Handle);
+			this.handle = IntPtr.Zero;
+		}
+	}
 }

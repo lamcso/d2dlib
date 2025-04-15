@@ -22,29 +22,16 @@
  * SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-
-using FLOAT = System.Single;
-using UINT = System.UInt32;
-using UINT32 = System.UInt32;
-using HWND = System.IntPtr;
-using HANDLE = System.IntPtr;
-using HRESULT = System.Int64;
-using BOOL = System.Int32;
-
 namespace unvell.D2DLib
 {
 	public class D2DPieGeometry : D2DGeometry
 	{
-		internal D2DPieGeometry(HANDLE deviceHandle, HANDLE pathHandle)
-			: base(deviceHandle, pathHandle)
+		internal D2DPieGeometry(D2DDevice device, HANDLE pathHandle)
+			: base(device, pathHandle)
 		{
 		}
 
-    public override void Dispose()
+		public override void Dispose()
 		{
 			D2D.DestroyPathGeometry(this.Handle);
 		}

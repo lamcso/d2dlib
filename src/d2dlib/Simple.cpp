@@ -1,4 +1,4 @@
-/*
+﻿/*
 * MIT License
 *
 * Copyright (c) 2009-2021 Jingwood, unvell.com. All right reserved.
@@ -108,7 +108,7 @@ void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color
 
 	ID2D1SolidColorBrush* brush = NULL;
 	ID2D1StrokeStyle* strokeStyle = NULL;
-	
+
 	context->renderTarget->CreateSolidColorBrush(color, &brush);
 
 	if (brush != NULL) {
@@ -149,6 +149,28 @@ void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color
 				context->renderTarget->DrawLine(points[i], points[i + 1], brush, width, strokeStyle);
 			}
 			//context->renderTarget->DrawLine(points[count - 1], points[0], brush, weight, strokeStyle);
+		}
+	}
+
+	SafeRelease(&strokeStyle);
+	SafeRelease(&brush);
+}
+
+void DrawUnconnectedLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color, FLOAT width)
+{
+	if (count <= 1) return;
+
+	RetrieveContext(ctx);
+
+	ID2D1SolidColorBrush* brush = NULL;
+	ID2D1StrokeStyle* strokeStyle = NULL;
+
+	context->renderTarget->CreateSolidColorBrush(color, &brush);
+
+	if (brush != NULL) {
+		for (UINT i = 0; i < count - 2; i+=2)
+		{
+			context->renderTarget->DrawLine(points[i], points[i + 1], brush, width, strokeStyle);
 		}
 	}
 
@@ -216,13 +238,32 @@ void FillRectangleWithBrush(HANDLE ctx, D2D1_RECT_F* rect, HANDLE brushHandle)
 {
 	RetrieveContext(ctx);
 
-	BrushContext* brushContext = reinterpret_cast<BrushContext*>(brushHandle);
+	D2DBrushContext* brushContext = reinterpret_cast<D2DBrushContext*>(brushHandle);
 	ID2D1Brush* brush = reinterpret_cast<ID2D1Brush*>(brushContext->brush);
 
 	if (brush != NULL) {
 		context->renderTarget->FillRectangle(rect, brush);
 	}
 }
+
+void DrawFillRectangle(HANDLE ctx, D2D1_RECT_F* rect, HANDLE fillBrushHandle, HANDLE strokePen, FLOAT width)
+{
+	RetrieveContext(ctx);
+
+	D2DBrushContext* brushContext = reinterpret_cast<D2DBrushContext*>(fillBrushHandle);
+	ID2D1Brush* brush = reinterpret_cast<ID2D1Brush*>(brushContext->brush);
+
+	if (brush != NULL) {
+		context->renderTarget->FillRectangle(rect, brush);
+	}
+
+	D2DPen* pen = reinterpret_cast<D2DPen*>(strokePen);
+	if (pen->brush != NULL) {
+		context->renderTarget->DrawRectangle(rect, pen->brush, width, pen->strokeStyle);
+	}
+}
+
+
 
 D2DLIB_API void DrawRoundedRect(HANDLE ctx, D2D1_ROUNDED_RECT* roundedRect, D2D1_COLOR_F strokeColor,
 	D2D1_COLOR_F fillColor, FLOAT strokeWidth, D2D1_DASH_STYLE strokeStyle)
@@ -267,12 +308,12 @@ D2DLIB_API void DrawRoundedRect(HANDLE ctx, D2D1_ROUNDED_RECT* roundedRect, D2D1
 }
 
 D2DLIB_API void DrawRoundedRectWithBrush(HANDLE ctx, D2D1_ROUNDED_RECT* roundedRect,
-	HANDLE strokePen, HANDLE fillBrush, float strokeWidth) 
+	HANDLE strokePen, HANDLE fillBrush, float strokeWidth)
 {
 	RetrieveContext(ctx);
 
 	D2DPen* pen = reinterpret_cast<D2DPen*>(strokePen);
-	BrushContext* brushContext = reinterpret_cast<BrushContext*>(fillBrush);
+	D2DBrushContext* brushContext = reinterpret_cast<D2DBrushContext*>(fillBrush);
 	ID2D1Brush* brush = reinterpret_cast<ID2D1Brush*>(brushContext->brush);
 
 	if (pen != NULL) {
@@ -285,7 +326,7 @@ D2DLIB_API void DrawRoundedRectWithBrush(HANDLE ctx, D2D1_ROUNDED_RECT* roundedR
 }
 
 void DrawEllipse(HANDLE handle, D2D1_ELLIPSE* ellipse, D2D1_COLOR_F color,
-								 FLOAT width, D2D1_DASH_STYLE dashStyle)
+	FLOAT width, D2D1_DASH_STYLE dashStyle)
 {
 	D2DContext* context = reinterpret_cast<D2DContext*>(handle);
 
@@ -334,7 +375,7 @@ void FillEllipseWithBrush(HANDLE ctx, D2D1_ELLIPSE* ellipse, HANDLE brushHandle)
 {
 	RetrieveContext(ctx);
 
-	BrushContext* brushContext = reinterpret_cast<BrushContext*>(brushHandle);
+	D2DBrushContext* brushContext = reinterpret_cast<D2DBrushContext*>(brushHandle);
 	ID2D1Brush* brush = reinterpret_cast<ID2D1Brush*>(brushContext->brush);
 
 	context->renderTarget->FillEllipse(ellipse, brush);

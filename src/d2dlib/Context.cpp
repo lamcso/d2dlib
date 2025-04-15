@@ -1,4 +1,4 @@
-/*
+﻿/*
 * MIT License
 *
 * Copyright (c) 2009-2021 Jingwood, unvell.com. All right reserved.
@@ -31,7 +31,7 @@
 #include <stack>
 using namespace std;
 
-HANDLE CreateContext(HWND hwnd)
+HANDLE CreateContext(HWND hwnd, D2D1_PRESENT_OPTIONS presentOptions)
 {
 	D2DContext* context = new D2DContext();
 	ZeroMemory(context, sizeof(context));
@@ -70,7 +70,7 @@ HANDLE CreateContext(HWND hwnd)
 
 	hr = context->factory->CreateHwndRenderTarget(
 			D2D1::RenderTargetProperties(),
-			D2D1::HwndRenderTargetProperties(context->hwnd, size),
+			D2D1::HwndRenderTargetProperties(context->hwnd, size, presentOptions),
 			&context->renderTarget);
 
 	if (!SUCCEEDED(hr)) {
@@ -130,6 +130,11 @@ void SetContextProperties(HANDLE ctx, D2D1_ANTIALIAS_MODE antialiasMode)
 	RetrieveContext(ctx);
 
 	context->renderTarget->SetAntialiasMode(antialiasMode);
+}
+void SetTextAntialiasMode(HANDLE ctx, D2D1_TEXT_ANTIALIAS_MODE antialiasMode)
+{
+	RetrieveContext(ctx);
+	context->renderTarget->SetTextAntialiasMode(antialiasMode);
 }
 
 void BeginRender(HANDLE ctx)
@@ -309,20 +314,25 @@ HANDLE CreateLayer(HANDLE ctx)
 	return (HANDLE)layer;
 }
 
-void PushLayer(HANDLE ctx, HANDLE layerHandle, D2D1_RECT_F& contentBounds, __in_opt HANDLE geometryHandle,
-		__in_opt ID2D1Brush* opacityBrush, D2D1_LAYER_OPTIONS layerOptions)
+void PushLayer(HANDLE ctx, HANDLE layerHandle, D2D1_RECT_F contentBounds, __in_opt HANDLE geometryHandle,
+		__in_opt HANDLE opacityBrush, D2D1_LAYER_OPTIONS layerOptions)
 {
 	RetrieveContext(ctx);
 
 	ID2D1Geometry* geometry = NULL;
-
 	if (geometryHandle != NULL) {
 		D2DGeometryContext* geometryContext = reinterpret_cast<D2DGeometryContext*>(geometryHandle);
 		geometry = geometryContext->geometry;
 	}
 
+	ID2D1Brush* brush = NULL;
+	if (opacityBrush != NULL) {
+		D2DBrushContext* brushContext = reinterpret_cast<D2DBrushContext*>(opacityBrush);
+		brush = brushContext->brush;
+	}
+
 	D2D1_LAYER_PARAMETERS params = D2D1::LayerParameters(contentBounds, geometry,
-		D2D1_ANTIALIAS_MODE_PER_PRIMITIVE, D2D1::IdentityMatrix(), 1, opacityBrush, layerOptions);
+		D2D1_ANTIALIAS_MODE_PER_PRIMITIVE, D2D1::IdentityMatrix(), 1, brush, layerOptions);
 
 	ID2D1Layer* layer = reinterpret_cast<ID2D1Layer*>(layerHandle);
 	context->renderTarget->PushLayer(&params, layer);
@@ -342,6 +352,7 @@ HRESULT GetLastErrorCode(HANDLE ctx)
 
 void ReleaseObject(HANDLE handle)
 {
-	ID2D1Resource* object = reinterpret_cast<ID2D1Resource*>(handle);
-	SafeRelease(&object);
+	IUnknown* object = reinterpret_cast<IUnknown*>(handle);
+	if (object != NULL)
+		SafeRelease(&object);
 }

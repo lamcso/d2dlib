@@ -1,26 +1,26 @@
 ﻿/*
-* MIT License
-*
-* Copyright (c) 2009-2021 Jingwood, unvell.com. All right reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in all
-* copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-* SOFTWARE.
-*/
+ * MIT License
+ *
+ * Copyright (c) 2009-2021 Jingwood, unvell.com. All right reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 #include "stdafx.h"
 #include "Context.h"
@@ -47,7 +47,7 @@ void Test(HANDLE handle)
 
 	IDWriteTextFormat* textFormat = NULL;
 	context->writeFactory->CreateTextFormat(
-		TEXT("NSimSun"), 
+		TEXT("MS Gothic"),
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
@@ -66,12 +66,12 @@ void Test(HANDLE handle)
 	ID2D1SolidColorBrush* brush = NULL;
 	rt->CreateSolidColorBrush(color, &brush);
 
-	const TCHAR* str = TEXT("汉字测试");
+	const TCHAR* str = TEXT("漢字テスト");
 
 	rt->BeginDraw();
 	rt->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
-	rt->DrawText(str, wcslen(str), textFormat, rect, brush);
+	rt->DrawText(str, (UINT32)wcslen(str), textFormat, rect, brush);
 
 	rt->EndDraw();
 
@@ -84,7 +84,7 @@ void TestDraw1(HANDLE ctx)
 	RetrieveContext(ctx);
 
 	ID2D1RenderTarget* render = context->renderTarget;
-	
+
 	ID2D1SolidColorBrush* brush;
 	render->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Silver), &brush);
 
