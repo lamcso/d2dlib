@@ -41,6 +41,10 @@ namespace unvell.D2DLib
 		{
 			D2D.DestroyBitmapRenderTarget(this.Handle);
 		}
+		public IntPtr GetHandle()
+		{
+			return Handle;
+		}
 	}
 
 }

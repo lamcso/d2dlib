@@ -300,6 +300,9 @@ namespace unvell.D2DLib
 		public static extern void ClosePath(HANDLE ctx);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+		public static extern void ClosePathOpen(HANDLE ctx);
+
+		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void AddPathLines(HANDLE path, D2DPoint* points, uint count);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]

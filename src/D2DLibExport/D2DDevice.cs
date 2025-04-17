@@ -118,6 +118,12 @@ namespace unvell.D2DLib
 			return new D2DPathGeometry(this, geoHandle);
 		}
 
+		public D2DPathGeometry CreatePathGeometry(IntPtr hand )
+		{
+			HANDLE geoHandle = D2D.CreatePathGeometry(hand);
+			return new D2DPathGeometry(this, geoHandle);
+		}
+
 		public D2DPathGeometry CreateCombinedGeometry(D2DPathGeometry path1, D2DPathGeometry path2,
 			D2D1CombineMode combineMode, FLOAT flatteningTolerance = 10f)
 		{

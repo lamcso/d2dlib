@@ -125,6 +125,15 @@ void ClosePath(HANDLE ctx)
 	
 	SafeRelease(&pathContext->sink);
 }
+void ClosePathOpen(HANDLE ctx)
+{
+	D2DPathContext* pathContext = reinterpret_cast<D2DPathContext*>(ctx);
+	pathContext->sink->EndFigure(D2D1_FIGURE_END_OPEN);
+	pathContext->sink->Close();
+	pathContext->isClosed = true;
+
+	SafeRelease(&pathContext->sink);
+}
 
 void AddPathLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count)
 {
@@ -196,7 +205,7 @@ void AddPathArc(HANDLE ctx, D2D1_POINT_2F endPoint, D2D1_SIZE_F size, FLOAT swee
 	pathContext->sink->AddArc(&seg);
 }
 
-void DrawPath(HANDLE pathCtx, D2D1_COLOR_F strokeColor, FLOAT strokeWidth, D2D1_DASH_STYLE dashStyle)
+void DrawPathWithStroke(HANDLE pathCtx, D2D1_COLOR_F strokeColor, FLOAT strokeWidth, D2D1_DASH_STYLE dashStyle, D2D1_CAP_STYLE startCap, D2D1_CAP_STYLE endCap, D2D1_CAP_STYLE dashCap, FLOAT miterLimit, FLOAT dashOffset)
 {
 	D2DPathContext* pathContext = reinterpret_cast<D2DPathContext*>(pathCtx);
 	D2DContext* context = pathContext->d2context;
@@ -212,13 +221,13 @@ void DrawPath(HANDLE pathCtx, D2D1_COLOR_F strokeColor, FLOAT strokeWidth, D2D1_
 	if (dashStyle != D2D1_DASH_STYLE_SOLID)
 	{
 		factory->CreateStrokeStyle(D2D1::StrokeStyleProperties(
-          D2D1_CAP_STYLE_FLAT,
-          D2D1_CAP_STYLE_FLAT,
-          D2D1_CAP_STYLE_ROUND,
-          D2D1_LINE_JOIN_MITER,
-          10.0f,
-          dashStyle,
-          0.0f), NULL, 0, &strokeStyle);
+			startCap,
+			endCap,
+			dashCap,
+			D2D1_LINE_JOIN_MITER,
+			miterLimit,
+			dashStyle,
+			dashOffset), NULL, 0, &strokeStyle);
 	}
 
 	renderTarget->DrawGeometry(pathContext->path, strokeBrush, strokeWidth, strokeStyle);
@@ -226,7 +235,36 @@ void DrawPath(HANDLE pathCtx, D2D1_COLOR_F strokeColor, FLOAT strokeWidth, D2D1_
 	SafeRelease(&strokeBrush);
 	SafeRelease(&strokeStyle);
 }
+void DrawPath(HANDLE pathCtx, D2D1_COLOR_F strokeColor, FLOAT strokeWidth, D2D1_DASH_STYLE dashStyle)
+{
+	D2DPathContext* pathContext = reinterpret_cast<D2DPathContext*>(pathCtx);
+	D2DContext* context = pathContext->d2context;
 
+	ID2D1Factory* factory = context->factory;
+	ID2D1RenderTarget* renderTarget = context->renderTarget;
+
+	ID2D1SolidColorBrush* strokeBrush = NULL;
+	renderTarget->CreateSolidColorBrush(strokeColor, &strokeBrush);
+
+	ID2D1StrokeStyle* strokeStyle = NULL;
+
+	if (dashStyle != D2D1_DASH_STYLE_SOLID)
+	{
+		factory->CreateStrokeStyle(D2D1::StrokeStyleProperties(
+			D2D1_CAP_STYLE_FLAT,
+			D2D1_CAP_STYLE_FLAT,
+			D2D1_CAP_STYLE_ROUND,
+			D2D1_LINE_JOIN_MITER,
+			10.0f,
+			dashStyle,
+			0.0f), NULL, 0, &strokeStyle);
+	}
+
+	renderTarget->DrawGeometry(pathContext->path, strokeBrush, strokeWidth, strokeStyle);
+
+	SafeRelease(&strokeBrush);
+	SafeRelease(&strokeStyle);
+}
 void DrawPathWithPen(HANDLE pathCtx, HANDLE strokePen, FLOAT strokeWidth)
 {
 	D2DPen* pen = reinterpret_cast<D2DPen*>(strokePen);

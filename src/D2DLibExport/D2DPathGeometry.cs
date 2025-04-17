@@ -84,7 +84,10 @@ namespace unvell.D2DLib
 		{
 			D2D.ClosePath(this.Handle);
 		}
-
+		public void ClosePathOpen()
+		{
+			D2D.ClosePathOpen(this.Handle);
+		}
 		public override void Dispose()
 		{
 			if (this.Handle != IntPtr.Zero) D2D.DestroyPathGeometry(this.Handle);

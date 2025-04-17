@@ -42,6 +42,7 @@ extern "C"
 
 	D2DLIB_API void SetPathStartPoint(HANDLE handle, D2D1_POINT_2F startPoint);
 	D2DLIB_API void ClosePath(HANDLE handle);
+	D2DLIB_API void ClosePathOpen(HANDLE handle);
 
 	D2DLIB_API void AddPathLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count);
 
@@ -58,6 +59,7 @@ extern "C"
 															D2D1_DASH_STYLE dashStyle = D2D1_DASH_STYLE::D2D1_DASH_STYLE_SOLID);
 
 	D2DLIB_API void DrawPath(HANDLE pathCtx, D2D1_COLOR_F strokeColor, FLOAT strokeWidth, D2D1_DASH_STYLE dashStyle);
+	D2DLIB_API void DrawPathWithStroke(HANDLE pathCtx, D2D1_COLOR_F strokeColor, FLOAT strokeWidth, D2D1_DASH_STYLE dashStyle, D2D1_CAP_STYLE startCap, D2D1_CAP_STYLE endCap, D2D1_CAP_STYLE dashCap, FLOAT miterLimit, FLOAT dashOffset);
 	D2DLIB_API void DrawPathWithPen(HANDLE pathCtx, HANDLE strokePen, FLOAT strokeWidth);
 	D2DLIB_API void FillPathD(HANDLE pathCtx, D2D1_COLOR_F fillColor);
 
