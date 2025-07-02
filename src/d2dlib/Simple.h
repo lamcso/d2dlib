@@ -42,7 +42,7 @@ extern "C"
 		D2D1_CAP_STYLE startCap = D2D1_CAP_STYLE::D2D1_CAP_STYLE_FLAT,
 		D2D1_CAP_STYLE endCap = D2D1_CAP_STYLE::D2D1_CAP_STYLE_FLAT,
 		D2D1_CAP_STYLE dashCap = D2D1_CAP_STYLE::D2D1_CAP_STYLE_ROUND,
-		FLOAT miterLimit = 10.0, FLOAT dashOffset = 0.0);
+		FLOAT miterLimit = 10.0, FLOAT dashOffset = 0.0, FLOAT* pattern = NULL);
 
 	D2DLIB_API void DrawUnconnectedLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color, FLOAT width);
 

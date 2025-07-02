@@ -107,14 +107,40 @@ namespace unvell.D2DLib
 			D2D.DrawLine(this.Handle, start, end, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
 		}
 
-		public unsafe void DrawLines(ReadOnlySpan<D2DPoint> points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
+		public unsafe void DrawLines(ReadOnlySpan<D2DPoint> points, D2DColor color, ReadOnlySpan<float> pattern, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
 			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat,
 			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
 		{
 			fixed (D2DPoint* p = points)
 			{
-				D2D.DrawLines(this.Handle, p, (uint)points.Length, color, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
+				if (!pattern.IsEmpty)
+				{
+					fixed (float* pDash = pattern)
+					{
+						D2D.DrawLines(this.Handle, p, (uint)points.Length,
+							color, weight, dashStyle,
+							startCap, endCap, dashCap,
+							miterLimit, dashOffset,
+							pDash);
+					}
+				}
+				else
+				{
+					D2D.DrawLines(this.Handle, p, (uint)points.Length,
+						color, weight, dashStyle,
+						startCap, endCap, dashCap,
+						miterLimit, dashOffset,
+						null);
+				}
 			}
+		}
+
+		public unsafe void DrawLines(ReadOnlySpan<D2DPoint> points, D2DColor color, FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat,
+			D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0)
+		{
+				DrawLines(points, color, ReadOnlySpan<float>.Empty, weight, dashStyle, startCap, endCap, dashCap, miterLimit, dashOffset);
+				
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

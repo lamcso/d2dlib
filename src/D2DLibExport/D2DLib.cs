@@ -147,7 +147,7 @@ namespace unvell.D2DLib
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void DrawLines(HANDLE context, D2DPoint* points, UINT count, D2DColor color,
 			FLOAT weight = 1, D2DDashStyle dashStyle = D2DDashStyle.Solid,
-			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0);
+			D2DCapStyle startCap = D2DCapStyle.Flat, D2DCapStyle endCap = D2DCapStyle.Flat, D2DCapStyle dashCap = D2DCapStyle.Round, float miterLimit = 10, float dashOffset = 0, float* pattern = null);
 
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void DrawUnconnectedLines(HANDLE context, D2DPoint[] points, UINT count, D2DColor color, FLOAT width);

@@ -100,7 +100,7 @@ D2DLIB_API void DrawLineWithPen(HANDLE ctx, D2D1_POINT_2F start, D2D1_POINT_2F e
 }
 
 void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color,
-	FLOAT width, D2D1_DASH_STYLE dashStyle, D2D1_CAP_STYLE startCap, D2D1_CAP_STYLE endCap, D2D1_CAP_STYLE dashCap, FLOAT miterLimit, FLOAT dashOffset)
+	FLOAT width, D2D1_DASH_STYLE dashStyle, D2D1_CAP_STYLE startCap, D2D1_CAP_STYLE endCap, D2D1_CAP_STYLE dashCap, FLOAT miterLimit, FLOAT dashOffset, FLOAT* pattern )
 {
 	if (count <= 1) return;
 
@@ -110,6 +110,11 @@ void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color
 	ID2D1StrokeStyle* strokeStyle = NULL;
 
 	context->renderTarget->CreateSolidColorBrush(color, &brush);
+	UINT32 patternSize = 0; 
+
+		if (pattern != NULL) {
+					patternSize = (sizeof((pattern)));
+		}
 
 	if (brush != NULL) {
 
@@ -124,7 +129,7 @@ void DrawLines(HANDLE ctx, D2D1_POINT_2F* points, UINT count, D2D1_COLOR_F color
 				D2D1_LINE_JOIN_MITER,
 				miterLimit,
 				dashStyle,
-				dashOffset), NULL, 0, &strokeStyle);
+				dashOffset), pattern, patternSize, &strokeStyle);
 		
 			ID2D1PathGeometry* pathGeo = NULL;
 			ID2D1GeometrySink* sink = NULL;
